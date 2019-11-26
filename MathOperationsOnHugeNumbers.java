@@ -1,11 +1,13 @@
 import java.util.*;
 
 public class MathOperationsOnHugeNumbers{
-
+    static int cntt = 0;
     public static void main(String[] args) {
-        System.out.println(sum("123123123159", "5923423423432"));
-        System.out.println(sumWithNegative("102342342348", "-24345345345"));
-        System.out.println(Multiply("10000002233", "1234567676767"));
+        //System.out.println(sum("123123123159", "5923423423432"));
+        //System.out.println(sumWithNegative("102342342348", "-24345345345"));
+        //System.out.println(Multiply("10000002233", "1234567676767"));
+        //System.out.println("final: " + Divide("5923423423432", "130"));
+        System.out.println("final: " + Divide("35", "120"));
     }
     private static String sum(String one, String two){
         int lengthForOne = one.length() - 1;
@@ -211,6 +213,107 @@ public class MathOperationsOnHugeNumbers{
         return reverse(Sum);
     }
 
+    private static String Divide(String one, String two){
+        int lengthForOne = one.length();
+        int lengthForTwo = two.length();
+        String finalString = "";
+        boolean inPoint = false;
+        ArrayList<String> QuotientAndRem;
+        int count = 0;
+
+        while(true){
+            QuotientAndRem = new ArrayList<>();
+            if(lengthForOne >= lengthForTwo){
+                String tempLeft = one.substring(0, lengthForTwo);
+                String tempRight = one.substring(lengthForTwo, one.length());
+                if(oneISGreaterThanTwo(tempLeft, two)){
+                    QuotientAndRem = divide(tempLeft, two);
+                }
+                else{
+                    tempLeft = one.substring(0, lengthForTwo + 1);
+                    tempRight = one.substring(lengthForTwo + 1, one.length());
+                    QuotientAndRem = divide(tempLeft, two);
+                }
+
+                finalString += QuotientAndRem.get(0);
+                tempRight = removeZeroAtFront(QuotientAndRem.get(1)) + tempRight;
+
+                if(tempRight.equals("0") || tempRight.equals("") || tempRight.equals(" "))
+                    break;
+
+                if(oneISGreaterThanTwo(two, tempRight)){
+                    if(!inPoint){
+                        finalString += ".";
+                        inPoint = true;
+                    }
+
+                    tempRight = addZeros(tempRight, two);   
+                }
+                one = tempRight;
+            }
+            else{
+                if(!inPoint){
+                    finalString += ".";
+                    inPoint = true;
+                }
+                one = addZeros(one, two);
+            }
+
+            lengthForOne = one.length();
+            lengthForTwo = two.length();
+
+            if(inPoint)
+                count++;
+            if(count >= 5)
+                break;
+        }
+
+        return finalString;
+    }
+
+    private static ArrayList<String> divide(String one, String two){
+        int diviser = 1;
+        String temp2 = two;
+        ArrayList<String> QuotientAndRem = new ArrayList<>();
+        while(true){
+            if(oneISGreaterThanTwo(sum(temp2, two), one))
+                break;
+            diviser++;
+            temp2 = sum(temp2, two);
+        }
+
+        String rem = removeZeroAtFront(sumWithNegative(one, "-" + temp2));
+        QuotientAndRem.add(Integer.toString(diviser));
+        if(rem.equals(""))
+            QuotientAndRem.add("0");
+        else
+            QuotientAndRem.add(rem);
+        return QuotientAndRem;
+    }
+
+    private static String addZeros(String small, String big){
+        int diff = big.length() - small.length();
+        int count = 0;
+        for(int i = 0; i < diff; i++){
+            small = small + "0";
+            count++;
+        }
+
+        if(oneISGreaterThanTwo(big, small)){
+            small = small + "0";
+            count++;
+        }
+        return small + Integer.toString(count);
+    }
+
+    private static String removeZeroAtFront(String string){
+        while(string.charAt(0) == '0'){
+            string = string.substring(1, string.length());
+            if(string.length() == 0)
+                return "";
+        }
+        return string;
+    }
     private static String reverse(String num){
         StringBuilder finalNumber = new StringBuilder();
 

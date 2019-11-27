@@ -6,8 +6,30 @@ public class MathOperationsOnHugeNumbers{
         //System.out.println(sum("123123123159", "5923423423432"));
         //System.out.println(sumWithNegative("102342342348", "-24345345345"));
         //System.out.println(Multiply("10000002233", "1234567676767"));
-        //System.out.println("final: " + Divide("5923423423432", "130"));
-        System.out.println("final: " + Divide("35", "120"));
+        //System.out.println("final: " + Divide("1313423423432", "130"));
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a number an operation and then a number");
+        String one = scanner.nextLine();
+        String operater = scanner.nextLine();
+        String two = scanner.nextLine();
+
+        switch(operater){
+            case "+":
+                System.out.println(sum(one, two));
+                break;
+            case "-":
+                System.out.println(sumWithNegative(one, "-"+two));
+                break;
+            case "*":
+                System.out.println(Multiply(one, two));
+                break;
+            case "/":
+                System.out.println(Divide(one, two));
+                break;
+            default:
+                System.out.println("Enter a valid operator");
+        }
+        scanner.close();
     }
     private static String sum(String one, String two){
         int lengthForOne = one.length() - 1;
@@ -75,19 +97,19 @@ public class MathOperationsOnHugeNumbers{
             else if(mulForOne == -1 && mulForTwo == 1){
                 String temp = one.substring(1);
                 if(oneISGreaterThanTwo(temp, two)){
-                    return "-" + Subtract(temp, two, min, lengthForOne - 1, lengthForTwo);
+                    return "-" + removeZeroAtFront(Subtract(temp, two, min, lengthForOne - 1, lengthForTwo));
                 }
                 else{
-                    return Subtract(two, temp, min, lengthForTwo, lengthForOne - 1);
+                    return removeZeroAtFront(Subtract(two, temp, min, lengthForTwo, lengthForOne - 1));
                 }
             }
             else if(mulForOne == 1 && mulForTwo == -1){
                 String temp = two.substring(1);
                 if(oneISGreaterThanTwo(temp, one)){
-                    return "-" + Subtract(temp, one, min, lengthForTwo - 1 , lengthForOne);
+                    return "-" + removeZeroAtFront(Subtract(temp, one, min, lengthForTwo - 1 , lengthForOne));
                 }
                 else{
-                    return Subtract(one, temp, min, lengthForOne, lengthForTwo - 1);
+                    return removeZeroAtFront(Subtract(one, temp, min, lengthForOne, lengthForTwo - 1));
                 }
             }
         }
@@ -238,6 +260,15 @@ public class MathOperationsOnHugeNumbers{
                 finalString += QuotientAndRem.get(0);
                 tempRight = removeZeroAtFront(QuotientAndRem.get(1)) + tempRight;
 
+                if(removeZeroAtFront(tempRight).equals("")){
+                    finalString += tempRight;
+                    return finalString;
+                }
+                int lengthOfRem = QuotientAndRem.get(1).length() + 1;
+                while(lengthOfRem < two.length()){
+                    finalString+="0";
+                    lengthOfRem++;
+                }
                 if(tempRight.equals("0") || tempRight.equals("") || tempRight.equals(" "))
                     break;
 
@@ -282,7 +313,7 @@ public class MathOperationsOnHugeNumbers{
             temp2 = sum(temp2, two);
         }
 
-        String rem = removeZeroAtFront(sumWithNegative(one, "-" + temp2));
+        String rem = sumWithNegative(one, "-" + temp2);
         QuotientAndRem.add(Integer.toString(diviser));
         if(rem.equals(""))
             QuotientAndRem.add("0");

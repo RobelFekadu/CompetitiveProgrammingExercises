@@ -1,5 +1,4 @@
 import java.util.*;
-
 public class IsAnagram{
 
     public boolean isAnagram(String s, String t) {

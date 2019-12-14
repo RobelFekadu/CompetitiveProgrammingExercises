@@ -32,6 +32,8 @@ public class CodeForceContestQuestion2 {
         int[] numbersIndex = new int[inputNumbers.length];
         StringBuilder result = new StringBuilder();
 
+        HashMap<String, Integer> sdf = new HashMap<>();
+        sdf.g
         for (int i = 0; i < inputNumbers.length; i++) {
             numbersIndex[inputNumbers[i] - 1] = i;
         }
